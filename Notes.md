@@ -120,15 +120,16 @@ void swap(int & a, int & b) {
 
 ### Bubble sort
 
-| Time complexity           | $\mathcal{O}(length^2)$ |
-| ------------------------- | ----------------------- |
-| **Space complexity**      | $\mathcal{O}(1)$        |
-| **Adaptive**              | Yes                     |
-| **Stable**                | Yes                     |
-| **Number of comparisons** | $\mathcal{O}(length^2)$ |
-| **Number of swaps**       | $\mathcal{O}(length^2)$ |
-| **Online**                | No                      |
-| **In place**              | Yes                     |
+| Bubble sort           |                         |
+| --------------------- | ----------------------- |
+| Time complexity       | $\mathcal{O}(length^2)$ |
+| Space complexity      | $\mathcal{O}(1)$        |
+| Adaptive              | Yes                     |
+| Stable                | Yes                     |
+| Number of comparisons | $\mathcal{O}(length^2)$ |
+| Number of swaps       | $\mathcal{O}(length^2)$ |
+| Online                | No                      |
+| In place              | Yes                     |
 
 #### Clean code
 
@@ -195,15 +196,16 @@ void bubbleSort(int * array, int length) {
 
 ### Selection sort
 
-| Time complexity           | $\mathcal{O}(length^2)$ |
-| ------------------------- | ----------------------- |
-| **Space complexity**      | $\mathcal{O}(1)$        |
-| **Adaptive**              | No                      |
-| **Stable**                | Yes                     |
-| **Number of comparisons** | $\mathcal{O}(length^2)$ |
-| **Number of swaps**       | $\mathcal{O}(length)$   |
-| **Online**                | No                      |
-| **In place**              | Yes                     |
+| Selection sort        |                         |
+| --------------------- | ----------------------- |
+| Time complexity       | $\mathcal{O}(length^2)$ |
+| Space complexity      | $\mathcal{O}(1)$        |
+| Adaptive              | No                      |
+| Stable                | Yes                     |
+| Number of comparisons | $\mathcal{O}(length^2)$ |
+| Number of swaps       | $\mathcal{O}(length)$   |
+| Online                | No                      |
+| In place              | Yes                     |
 
 #### Clean code
 
@@ -245,15 +247,16 @@ void selectionSort(int * array, int length) {
 
 ### Insertion sort
 
-| Time complexity           | $\mathcal{O}(length^2)$ |
-| ------------------------- | ----------------------- |
-| **Space complexity**      | $\mathcal{O}(1)$        |
-| **Adaptive**              | Yes                     |
-| **Stable**                | Yes                     |
-| **Number of comparisons** | $\mathcal{O}(length^2)$ |
-| **Number of swaps**       | $\mathcal{O}(length^2)$ |
-| **Online**                | Yes                     |
-| **In place**              | Yes                     |
+| Insertion sort        |                         |
+| --------------------- | ----------------------- |
+| Time complexity       | $\mathcal{O}(length^2)$ |
+| Space complexity      | $\mathcal{O}(1)$        |
+| Adaptive              | Yes                     |
+| Stable                | Yes                     |
+| Number of comparisons | $\mathcal{O}(length^2)$ |
+| Number of swaps       | $\mathcal{O}(length^2)$ |
+| Online                | Yes                     |
+| In place              | Yes                     |
 
 #### Clean code
 
