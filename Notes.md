@@ -62,6 +62,12 @@ $\mathcal{O}(5N + \frac{1}{2} M) = N + M$
 
 $\mathcal{O}(n^2)$ means that if our algorithm takes input of 10 elements it will need 100 steps to finish in the worst case. If the input is of 100 elements it will need 10000 steps to finish in the worst case.
 
+### Constants and Big O
+
+Usually we discard constants when using Big O, but in some cases the constant can be meaningful for small input sizes. In the following example $\mathcal{O}(n^2)$ is faster than $\mathcal{O}(n)$ because our complexities are $n^2$ and $9n$ so for $n < 9$ the $n^2$ algorithm is faster than the $9n$ one.
+
+![](https://i.imgur.com/qv7rO70.png)
+
 ## Sorting
 
 Sorting means ordering a set of elements in a sequence.
