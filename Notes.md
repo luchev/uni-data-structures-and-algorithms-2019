@@ -72,9 +72,11 @@ We can sort a set of elements whose elements are in partial order. Partial order
 2. Transitivity - For every 3 elements in the set (A, B, C), if $A \le B$ and $B \le C$ then $A \le C$.
 3. Reflexivity - For every element in the set A, $A \le A$.
 
-#### Sorting properties
+### Sorting properties
 
-**Stable sort** - a sorting algorithm is stable if two equal objects appear in the same order in the ordered output as they appeared in the unsorted input.
+#### Stable sort
+
+A sorting algorithm is stable if two equal objects appear in the same order in the ordered output as they appeared in the unsorted input.
 
 > Example input: $1, 2, 3_a, 8, 5, 3_b$. Here $3_a$ and $3_b$ are simply a 3 but we have marked them to follow what happens with them after the sorting.
 >
@@ -82,13 +84,201 @@ We can sort a set of elements whose elements are in partial order. Partial order
 >
 > Unstable sort output: $1,2,3_b,3_a,5,8$
 
-**In place sort** - uses only a small constant amount of extra memory. In place sort means the elements are swapped around. Out of place means we use another extra array to swap items around.
+#### In place sort
 
-**Number of comparisons** - How many times do we need to compare 2 elements. For most sorts this represents the time complexity.
+Uses only a small constant amount of extra memory. In place sort means the elements are swapped around. Out of place means we use another extra array to swap items around.
 
-**Adaptivity** - Determines whether the sorting algorithm runs faster for inputs that are partially or fully sorted. If an algorithm is unadaptive it runs for the same time on sorted and unsorted input. If an algorithm is adaptive it runs faster on sorted input than on unsorted input.
+#### Number of comparisons
 
-**Online** - Determines if an algorithm needs all the items from the input to start sorting. If an algorithm is online it can start sorting input that is given in parts. If an algorithm is offline it can start sorting only after it has the whole input.
+How many times do we need to compare 2 elements. For most sorts this represents the time complexity.
+
+#### Adaptive sort
+
+Determines whether the sorting algorithm runs faster for inputs that are partially or fully sorted. If an algorithm is unadaptive it runs for the same time on sorted and unsorted input. If an algorithm is adaptive it runs faster on sorted input than on unsorted input.
+
+#### Online
+
+Determines if an algorithm needs all the items from the input to start sorting. If an algorithm is online it can start sorting input that is given in parts. If an algorithm is offline it can start sorting only after it has the whole input.
+
+#### External sort
+
+Allows sorting data which cannot fit into memory. Such algorithms are designed to sort massive amounts of data (Gigabytes, Terabytes, etc.)
+
+#### Parallel sort
+
+An algorithm which can be ran on multiple threads at the same time, speeding the running time.
+
+### Helper code
+
+```c++
+void swap(int & a, int & b) {
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+```
 
 ### Bubble sort
+
+| Time complexity           | $\mathcal{O}(length^2)$ |
+| ------------------------- | ----------------------- |
+| **Space complexity**      | $\mathcal{O}(1)$        |
+| **Adaptive**              | Yes                     |
+| **Stable**                | Yes                     |
+| **Number of comparisons** | $\mathcal{O}(length^2)$ |
+| **Number of swaps**       | $\mathcal{O}(length^2)$ |
+| **Online**                | No                      |
+| **In place**              | Yes                     |
+
+#### Clean code
+
+```c++
+void bubbleSort(int * array, int length) {
+    for (int bubbleStartIndex = 0; bubbleStartIndex < length; bubbleStartIndex++) {
+        for (int bubbleMovedIndex = 0; bubbleMovedIndex < length - 1; bubbleMovedIndex++) {
+            if (array[bubbleMovedIndex] > array[bubbleMovedIndex+1]) {
+                swap(array[bubbleMovedIndex], array[bubbleMovedIndex+1]);
+            }
+        }
+    }
+}
+```
+
+#### Short code
+
+```c++
+void bubbleSort(int * array, int length) {
+    for (int i = 0; i < length; i++) {
+        for (int k = 0; k < length - 1; k++) {
+            if (array[k] > array[k+1]) {
+                swap(array[k], array[k+1]);
+            }
+        }
+    }
+}
+```
+
+#### Optimization 1 - make it faster
+
+```c++
+void bubbleSort(int * array, int length) {
+    for (int i = 0; i < length; i++) {
+        for (int k = 0; k < length - 1 - i; k++) { // length - 1 - i = 2x less iterations
+            if (array[k] > array[k+1]) {
+                swap(array[k], array[k+1]);
+            }
+        }
+    }
+}
+```
+
+#### Optimization 2 - make it adaptive
+
+```c++
+void bubbleSort(int * array, int length) {
+    for (int i = 0; i < length; i++) {
+        bool swappedAtLeastOnce = false; // add a flag to check if a swap has occurred
+
+        for (int k = 0; k < length - 1 - i; k++) {
+            if (array[k] > array[k+1]) {
+                swap(array[k], array[k+1]);
+                swappedAtLeastOnce = true;
+            }
+        }
+        
+        if (!swappedAtLeastOnce) { // if there were no swaps, it's ordered
+            break;
+        }
+    }
+}
+```
+
+### Selection sort
+
+| Time complexity           | $\mathcal{O}(length^2)$ |
+| ------------------------- | ----------------------- |
+| **Space complexity**      | $\mathcal{O}(1)$        |
+| **Adaptive**              | No                      |
+| **Stable**                | Yes                     |
+| **Number of comparisons** | $\mathcal{O}(length^2)$ |
+| **Number of swaps**       | $\mathcal{O}(length)$   |
+| **Online**                | No                      |
+| **In place**              | Yes                     |
+
+#### Clean code
+
+```c++
+void selectionSort(int * array, int length) {
+    for (int currentIndex = 0; currentIndex < length; currentIndex++) {
+        int smallestNumberIndex = currentIndex;
+
+        for (int potentialSmallerNumberIndex = currentIndex + 1; 
+             	potentialSmallerNumberIndex < length;
+             	potentialSmallerNumberIndex++) {
+            if (array[potentialSmallerNumberIndex] < array[smallestNumberIndex]) {
+                smallestNumberIndex = potentialSmallerNumberIndex;
+            }
+        }
+        
+        swap(array[currentIndex], array[smallestNumberIndex]);
+    }
+}
+```
+
+#### Short code
+
+```c++
+void selectionSort(int * array, int length) {
+    for (int i = 0; i < length; i++) {
+        int index = i;
+
+        for (int k = i + 1; k < length; k++) {
+            if (array[k] < array[index]) {
+                index = k;
+            }
+        }
+        
+        swap(array[i], array[index]);
+    }
+}
+```
+
+### Insertion sort
+
+| Time complexity           | $\mathcal{O}(length^2)$ |
+| ------------------------- | ----------------------- |
+| **Space complexity**      | $\mathcal{O}(1)$        |
+| **Adaptive**              | Yes                     |
+| **Stable**                | Yes                     |
+| **Number of comparisons** | $\mathcal{O}(length^2)$ |
+| **Number of swaps**       | $\mathcal{O}(length^2)$ |
+| **Online**                | Yes                     |
+| **In place**              | Yes                     |
+
+#### Clean code
+
+```c++
+void insertionSort(int * array, int length) {
+    for (int nextItemToSortIndex = 1; nextItemToSortIndex < length; nextItemToSortIndex++) {
+        for (int potentiallyBiggerItemIndex = nextItemToSortIndex; 
+             	potentiallyBiggerItemIndex > 0 && 
+             	array[potentiallyBiggerItemIndex] < array[potentiallyBiggerItemIndex - 1];
+             	potentiallyBiggerItemIndex--) {
+            swap(array[potentiallyBiggerItemIndex], array[potentiallyBiggerItemIndex-1]);
+        }
+    }
+}
+```
+
+#### Short code
+
+```c++
+void insertionSort(int * array, int length) {
+    for (int i = 1; i < length; i++) {
+        for (int k = i; k > 0 && array[k] < array[k - 1]; k--) {
+            swap(array[k], array[k-1]);
+        }
+    }
+}
+```
 
