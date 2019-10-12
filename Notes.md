@@ -30,6 +30,10 @@ $$
 < \mathcal{O}(n^3) < \mathcal{O}(2^n) < \mathcal{O}(3^n) < \mathcal{O}(n!) < \mathcal{O}(n^n) < \mathcal{O}(3^{n^2}) < \mathcal{O}(2^{n^3})
 $$
 
+### Big O cheat sheet
+
+https://www.bigocheatsheet.com/
+
 ### Formal definitions
 
 $$
@@ -102,7 +106,7 @@ How many times do we need to compare 2 elements. For most sorts this represents 
 
 Determines whether the sorting algorithm runs faster for inputs that are partially or fully sorted. If an algorithm is unadaptive it runs for the same time on sorted and unsorted input. If an algorithm is adaptive it runs faster on sorted input than on unsorted input.
 
-#### Online
+#### Online sort
 
 Determines if an algorithm needs all the items from the input to start sorting. If an algorithm is online it can start sorting input that is given in parts. If an algorithm is offline it can start sorting only after it has the whole input.
 
@@ -117,6 +121,7 @@ An algorithm which can be ran on multiple threads at the same time, speeding the
 ### Helper code
 
 ```c++
+// swap the values of two variables
 void swap(int & a, int & b) {
     int tmp = a;
     a = b;
@@ -126,16 +131,18 @@ void swap(int & a, int & b) {
 
 ### Bubble sort
 
-| Bubble sort           |                         |
-| --------------------- | ----------------------- |
-| Time complexity       | $\mathcal{O}(length^2)$ |
-| Space complexity      | $\mathcal{O}(1)$        |
-| Adaptive              | Yes                     |
-| Stable                | Yes                     |
-| Number of comparisons | $\mathcal{O}(length^2)$ |
-| Number of swaps       | $\mathcal{O}(length^2)$ |
-| Online                | No                      |
-| In place              | Yes                     |
+| Bubble sort           | n = input size     |
+| --------------------- | ------------------ |
+| Time complexity       | $\mathcal{O}(n^2)$ |
+| Space complexity      | $\mathcal{O}(1)$   |
+| Adaptive              | Yes                |
+| Stable                | Yes                |
+| Number of comparisons | $\mathcal{O}(n^2)$ |
+| Number of swaps       | $\mathcal{O}(n^2)$ |
+| Online                | No                 |
+| In place              | Yes                |
+
+Honorable mention - Cocktail shaker sort, similar to bubble and selection sort. It’s like the Online version of bubble sort.
 
 #### Clean code
 
@@ -202,16 +209,20 @@ void bubbleSort(int * array, int length) {
 
 ### Selection sort
 
-| Selection sort        |                         |
-| --------------------- | ----------------------- |
-| Time complexity       | $\mathcal{O}(length^2)$ |
-| Space complexity      | $\mathcal{O}(1)$        |
-| Adaptive              | No                      |
-| Stable                | Yes                     |
-| Number of comparisons | $\mathcal{O}(length^2)$ |
-| Number of swaps       | $\mathcal{O}(length)$   |
-| Online                | No                      |
-| In place              | Yes                     |
+| Selection sort        | n = input size     |
+| --------------------- | ------------------ |
+| Time complexity       | $\mathcal{O}(n^2)$ |
+| Space complexity      | $\mathcal{O}(1)$   |
+| Adaptive              | No                 |
+| Stable                | No                 |
+| Number of comparisons | $\mathcal{O}(n^2)$ |
+| Number of swaps       | $\mathcal{O}(n)$   |
+| Online                | No                 |
+| In place              | Yes                |
+
+#### Key points
+
+1. It’s better than bubble sort in cases we need to sort items which are very large in size because it has $\mathcal{O}(n)$ swaps.
 
 #### Clean code
 
@@ -253,16 +264,21 @@ void selectionSort(int * array, int length) {
 
 ### Insertion sort
 
-| Insertion sort        |                         |
-| --------------------- | ----------------------- |
-| Time complexity       | $\mathcal{O}(length^2)$ |
-| Space complexity      | $\mathcal{O}(1)$        |
-| Adaptive              | Yes                     |
-| Stable                | Yes                     |
-| Number of comparisons | $\mathcal{O}(length^2)$ |
-| Number of swaps       | $\mathcal{O}(length^2)$ |
-| Online                | Yes                     |
-| In place              | Yes                     |
+| Insertion sort        | n = input size     |
+| --------------------- | ------------------ |
+| Time complexity       | $\mathcal{O}(n^2)$ |
+| Space complexity      | $\mathcal{O}(1)$   |
+| Adaptive              | Yes                |
+| Stable                | Yes                |
+| Number of comparisons | $\mathcal{O}(n^2)$ |
+| Number of swaps       | $\mathcal{O}(n^2)$ |
+| Online                | Yes                |
+| In place              | Yes                |
+
+#### Key points
+
+1. The best algorithm for sorting small arrays.
+2. Often combined with other algorithms for optimal runtime.
 
 #### Clean code
 
@@ -290,4 +306,340 @@ void insertionSort(int * array, int length) {
     }
 }
 ```
+
+### Merge sort
+
+| Merge sort            | n = input size          |
+| --------------------- | ----------------------- |
+| Time complexity       | $\mathcal{O}(n*log(n))$ |
+| Space complexity      | $\mathcal{O}(n)$        |
+| Adaptive              | No                      |
+| Stable                | Yes                     |
+| Number of comparisons | $\mathcal{O}(n*log(n))$ |
+| External              | Yes                     |
+| Parallel              | Yes                     |
+| Online                | No                      |
+| In place              | No                      |
+
+#### Key points
+
+1. Every array of 0 or 1 elements is sorted.
+2. Merging requires additional memory.
+3. Splitting the array in 2 every time gives us $log(n)$ levels.
+4. On each level we have $\mathcal{O}(n)$ for the merging operation.
+
+Honorable mention - Ford–Johnson aka Merge-insertion sort. Cool idea, but not practical enough.
+
+Important algorithm: Timsort - Absolute beast.
+
+#### Clean code
+
+```c++
+void merge(int * originalArray, int * mergeArray, int start, int mid, int end) {
+    int leftIndex = start;
+    int rightIndex = mid + 1;
+    int sortedIndex = start;
+
+    while (leftIndex <= mid && rightIndex <= end) {
+        if (originalArray[leftIndex] <= originalArray[rightIndex]) {
+            mergeArray[sortedIndex] = originalArray[leftIndex];
+            leftIndex++;
+        } else {
+            mergeArray[sortedIndex] = originalArray[rightIndex];
+            rightIndex++;
+        }
+
+        sortedIndex++;
+    }
+
+    while (leftIndex <= mid) {
+        mergeArray[sortedIndex] = originalArray[leftIndex];
+        leftIndex++;
+    }
+    while (rightIndex <= end) {
+        mergeArray[sortedIndex] = originalArray[rightIndex];
+        rightIndex++;
+    }
+
+    for (int i = start; i <= end; i++) {
+        originalArray[i] = mergeArray[i];
+    }
+}
+
+void mergeSortRecursive(int * original, int * mergeArray, int start, int end) {
+    if (start < end) {
+        int mid = (start + end) / 2;
+
+        mergeSortRecursive(original, mergeArray, start, mid);
+        mergeSortRecursive(original, mergeArray, mid + 1, end);
+
+        merge(original, mergeArray, start, mid, end);
+    }
+}
+
+void mergeSort(int * array, int length) {
+    int * mergeArray = new int[length];
+    mergeSortRecursive(array, mergeArray, 0, length - 1);
+    delete[] mergeArray;
+}
+```
+
+#### Short code
+
+```c++
+void merge(int * originalArray, int * mergeArray, int start, int mid, int end) {
+    int left = start;
+    int right = mid + 1;
+
+    for (int i = start; i <= end; i++) {
+        if (left <= mid && (right > end || originalArray[left] <= originalArray[right])) {
+            mergeArray[i] = originalArray[left];
+            left++;
+        } else {
+            mergeArray[i] = originalArray[right];
+            right++;
+        }
+    }
+
+    for (int i = start; i <= end; i++) {
+        originalArray[i] = mergeArray[i];
+    }
+}
+
+void mergeSortRecursive(int * originalArray, int * mergeArray, int start, int end) {
+    if (start < end) {
+        int mid = (start + end) / 2;
+
+        mergeSortRecursive(originalArray, mergeArray, start, mid);
+        mergeSortRecursive(originalArray, mergeArray, mid + 1, end);
+
+        merge(originalArray, mergeArray, start, mid, end);
+    }
+}
+
+void mergeSort(int * array, int length) {
+    int * mergeArray = new int[length];
+    mergeSortRecursive(array, mergeArray, 0, length - 1);
+    delete[] mergeArray;
+}
+```
+
+### Quick sort
+
+| Quick sort                     | n = input size                        |
+| ------------------------------ | ------------------------------------- |
+| Time complexity (Worst case)   | $\mathcal{O}(n^2)$                    |
+| Time complexity (Average case) | $\mathcal{O}(n*log(n))$               |
+| Space complexity               | $\mathcal{O}(log(n))$                 |
+| Adaptive                       | No                                    |
+| Anti-Adaptive                  | Yes (the more randomness, the better) |
+| Stable                         | No                                    |
+| Number of comparisons          | $\mathcal{O}(n*log(n))$               |
+| Parallel                       | Yes                                   |
+| Online                         | No                                    |
+| In place                       | Yes                                   |
+| Locality                       | Yes                                   |
+
+#### Key points
+
+1. Quick sort adores chaos. That’s why a common strategy is to shuffle the array before sorting it.
+
+C++ STL sorting algorithm is Introsort, which is a hybrid between quicksort and heapsort.
+
+Quick sort can also be optimized with picking 2 pivots instead of 1. 
+
+#### Clean code using Lomuto partitioning
+
+```c++
+int partition(int * array, int startIndex, int endIndex) {
+    int pivot = array[endIndex];
+    int pivotIndex = startIndex;
+
+    for (int i = startIndex; i <= endIndex; i++) {
+        if (array[i] < pivot) {
+            swap(array[i], array[pivotIndex]);
+            pivotIndex++;
+        }
+    }
+
+    swap(array[endIndex], array[pivotIndex]);
+    return pivotIndex;
+}
+
+void _quickSort(int * array, int startIndex, int endIndex) {
+    if (startIndex < endIndex) {
+        int pivot = partition(array, startIndex, endIndex);
+        _quickSort(array, startIndex, pivot - 1);
+        _quickSort(array, pivot + 1, endIndex);
+    }
+}
+
+void quickSort(int * array, int length) {
+    _quickSort(array, 0, length - 1);
+}
+```
+
+#### Short code using Lomuto partitioning
+
+```c++
+int partition(int * array, int start, int end) {
+    int pivot = array[end];
+    int pivotIndex = start;
+    for (int i = start; i <= end; i++) {
+        if (array[i] < pivot) {
+            swap(array[i], array[pivotIndex]);
+            pivotIndex++;
+        }
+    }
+    swap(array[end], array[pivotIndex]);
+    return pivotIndex;
+}
+
+void _quickSort(int * array, int start, int end) {
+    if (start < end) {
+        int pivot = partition(array, start, end);
+        _quickSort(array, start, pivot - 1);
+        _quickSort(array, pivot + 1, end);
+    }
+}
+
+void quickSort(int * array, int length) {
+    _quickSort(array, 0, length - 1);
+}
+```
+
+#### Optimization 1 - pivot is random number
+
+```c++
+#include <random>
+int generateRandomNumber(int from, int to) {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(from,to);
+
+    return dist6(rng);
+}
+
+int partition(int * array, int start, int end) {
+    int randomIndex = generateRandomNumber(start, end);
+    swap(array[end], array[randomIndex]);
+    
+    int pivot = array[end];
+    int pivotIndex = start;
+    for (int i = start; i <= end; i++) {
+        if (array[i] < pivot) {
+            swap(array[i], array[pivotIndex]);
+            pivotIndex++;
+        }
+    }
+    swap(array[end], array[pivotIndex]);
+    return pivotIndex;
+}
+
+void _quickSort(int * array, int start, int end) {
+    if (start < end) {
+        int pivot = partition(array, start, end);
+        _quickSort(array, start, pivot - 1);
+        _quickSort(array, pivot + 1, end);
+    }
+}
+
+void quickSort(int * array, int length) {
+    _quickSort(array, 0, length - 1);
+}
+```
+
+#### Optimization 2 - shuffle before picking pivot
+
+```c++
+#include <random>
+int generateRandomNumber(int from, int to) {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(from,to);
+
+    return dist6(rng);
+}
+
+void shuffle(int * arr, int length) {
+    for (int i = 0; i < length - 1; i++) {
+        int swapCurrentWith = generateRandomNumber(i, length - 1);
+        swap(arr[i], arr[swapCurrentWith]);
+    }
+}
+
+int partition(int * array, int start, int end) {
+    shuffle(array + start, end - start);
+
+    int pivot = array[end];
+    int pivotIndex = start;
+    for (int i = start; i <= end; i++) {
+        if (array[i] < pivot) {
+            swap(array[i], array[pivotIndex]);
+            pivotIndex++;
+        }
+    }
+    swap(array[end], array[pivotIndex]);
+    return pivotIndex;
+}
+
+void _quickSort(int * array, int start, int end) {
+    if (start < end) {
+        int pivot = partition(array, start, end);
+        _quickSort(array, start, pivot - 1);
+        _quickSort(array, pivot + 1, end);
+    }
+}
+
+void quickSort(int * array, int length) {
+    _quickSort(array, 0, length - 1);
+}
+```
+
+#### Short code using Hoare partitioning
+
+```c++
+int partition(int * array, int start, int end) {
+    int pivot = array[(start + end) / 2];
+    int left = start;
+    int right = end;
+    
+    while (true) {
+        while (array[left] < pivot) {
+            left++;
+        }
+        while (array[right] > pivot) {
+            right--;
+        }
+        
+        if (left >= right) {
+            return right;
+        }
+
+        swap(array[left], array[right]);
+    }
+}
+
+void _quickSort(int * array, int start, int end) {
+    if (start < end) {
+        int pivot = partition(array, start, end);
+        _quickSort(array, start, pivot - 1);
+        _quickSort(array, pivot + 1, end);
+    }
+}
+
+void quickSort(int * array, int length) {
+    _quickSort(array, 0, length - 1);
+}
+```
+
+### Counting sort
+
+
+
+### Bucket sort
+
+
+
+### Radix sort
 
