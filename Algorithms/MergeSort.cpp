@@ -19,12 +19,12 @@ void merge(int * originalArray, int * mergeArray, int start, int mid, int end) {
     }
 }
 
-void mergeSortRecursive(int * originalArray, int * mergeArray, int start, int end) {
+void _mergeSort(int * originalArray, int * mergeArray, int start, int end) {
     if (start < end) {
         int mid = (start + end) / 2;
 
-        mergeSortRecursive(originalArray, mergeArray, start, mid);
-        mergeSortRecursive(originalArray, mergeArray, mid + 1, end);
+        _mergeSort(originalArray, mergeArray, start, mid);
+        _mergeSort(originalArray, mergeArray, mid + 1, end);
 
         merge(originalArray, mergeArray, start, mid, end);
     }
@@ -32,7 +32,7 @@ void mergeSortRecursive(int * originalArray, int * mergeArray, int start, int en
 
 void mergeSort(int * array, int length) {
     int * mergeArray = new int[length];
-    mergeSortRecursive(array, mergeArray, 0, length - 1);
+    _mergeSort(array, mergeArray, 0, length - 1);
     delete[] mergeArray;
 }
 
