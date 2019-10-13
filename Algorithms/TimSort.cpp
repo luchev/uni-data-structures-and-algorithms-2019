@@ -68,6 +68,7 @@ void merge(int arr[], int left, int mid, int right)
 
 const int RUN = 32;
 
+// Tim sort without galloping (binary search)
 void timSort(int * array, int length)
 {
     for (int i = 0; i < length; i+=RUN)
