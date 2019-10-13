@@ -118,6 +118,10 @@ Allows sorting data which cannot fit into memory. Such algorithms are designed t
 
 An algorithm which can be ran on multiple threads at the same time, speeding the running time.
 
+#### Locality
+
+An algorithm which heavily uses the processor cache to speed up its execution. The data processed needs to be sequentially located.
+
 ### Helper code
 
 ```c++
@@ -446,7 +450,9 @@ void mergeSort(int * array, int length) {
 
 C++ STL sorting algorithm is Introsort, which is a hybrid between quicksort and heapsort.
 
-Quick sort can also be optimized with picking 2 pivots instead of 1. 
+Quick sort optimization for arrays with many equal numbers - three-way partitioning, aka Dutch national flag.
+
+Quick sort can also be optimized with picking 2 pivots instead of 1 - multi-pivot quicksort.
 
 #### Clean code using Lomuto partitioning
 
@@ -635,11 +641,145 @@ void quickSort(int * array, int length) {
 
 ### Counting sort
 
+| Counting sort                | n = input size, k = max number |
+| ---------------------------- | ------------------------------ |
+| Time complexity (Worst case) | $\mathcal{O}(n + k)$           |
+| Time complexity (Best case)  | $\mathcal{O}(n)$               |
+| Space complexity             | $\mathcal{O}(k)$               |
 
+#### Key points
+
+1. Not a comparison sort.
+2. Very efficient for an array of integers with many repeating integers with small difference between the biggest and smallest integer.
+
+#### Counting sort for positive numbers
+
+```c++
+void countingSort(int * array, int length) {
+    int maxNumber = 0;
+    for (int i = 0; i < length; i++) {
+        if (array[i] > maxNumber) {
+            maxNumber = array[i];
+        }
+    }
+
+    int * countingArray = new int[maxNumber + 1];
+    for (int i = 0; i < maxNumber + 1; i++) {
+        countingArray[i] = 0;
+    }
+
+    for (int i = 0; i < length; i++) {
+        countingArray[array[i]]++;
+    }
+
+    int sortedIndex = 0;
+    for (int i = 0; i < length; i++) {
+        while (countingArray[sortedIndex] == 0) {
+            sortedIndex++;
+        }
+
+        array[i] = sortedIndex;
+        countingArray[sortedIndex]--;
+    }
+
+    delete[] countingArray;
+}
+```
 
 ### Bucket sort
 
+| Bucket sort                    | n = input size, k = number of buckets |
+| ------------------------------ | ------------------------------------- |
+| Time complexity (Worst case)   | $\mathcal{O}(n^2)$                    |
+| Time complexity (Average case) | $\mathcal{O}(n+\frac{n^2}{k}+k)$      |
+| Space complexity               | $\mathcal{O}(nk)$                     |
 
+#### Key points
+
+1. It’s a distribution sort, not a comparison sort.
+2. Very situational sort.
+3. The bellow code is a sample implementation for floats between 0 and 1.
+
+```c++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+void bucketSort(double *array, int length) {
+    std::vector<double> buckets[length];
+
+    for(int i = 0; i < length; i++) {
+        buckets[int(length * array[i])].push_back(array[i]);
+    }
+
+    for(int i = 0; i < length; i++) {
+        sort(buckets[i].begin(), buckets[i].end());
+    }
+
+    int index = 0;
+    for(int i = 0; i < length; i++) {
+        while(!buckets[i].empty()) {
+            array[index] = buckets[i][0];
+            index++;
+            buckets[i].erase(buckets[i].begin());
+        }
+    }
+}
+```
 
 ### Radix sort
+
+| Radix sort                     | n = input size                   |
+| ------------------------------ | -------------------------------- |
+| Time complexity (Worst case)   | $\mathcal{O}(n^2)$               |
+| Time complexity (Average case) | $\mathcal{O}(n+\frac{n^2}{k}+k)$ |
+| Space complexity               | $\mathcal{O}(nk)$                |
+
+#### Key points
+
+1. Good on multi-threaded machines.
+
+```c++
+#include <iostream>
+#include <cmath>
+#include <list>
+
+int abs(int a) {
+    return a >= 0 ? a : -a;
+}
+
+void radixSort(int * array, int length) {
+    int maxNumber = 0;
+    for (int i = 0; i < length; i++) {
+        if (abs(array[i]) > maxNumber) {
+            maxNumber = abs(array[i]);
+        }
+    }
+
+    int maxDigits = log10(maxNumber) + 1;
+
+    std::list<int> pocket[10];
+
+    for(int i = 0; i < maxDigits; i++) {
+        int m = pow(10, i + 1);
+        int p = pow(10, i);
+
+        for(int j = 0; j < length; j++) {
+            int temp = array[j] % m;
+            int index = temp / p;
+            pocket[index].push_back(array[j]);
+        }
+
+        int count = 0;
+        for(int j = 0; j<10; j++) {
+            while(!pocket[j].empty()) {
+                array[count] = *(pocket[j].begin());
+                pocket[j].erase(pocket[j].begin());
+                count++;
+            }
+        }
+    }
+}
+```
+
+## Linked list
 
