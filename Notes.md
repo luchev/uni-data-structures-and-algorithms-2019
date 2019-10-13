@@ -781,5 +781,154 @@ void radixSort(int * array, int length) {
 }
 ```
 
-## Linked list
+## Searching
 
+### Linear search
+
+### Binary search
+
+### Exponential search
+
+### Ternary search
+
+### Jump search
+
+### Interpolation search
+
+## Linked lists
+
+### Singly linked list
+
+### Doubly linked list
+
+### Circular linked list
+
+### XOR linked list
+
+### Unrolled linked list
+
+### Skip list
+
+## Dynamic arrays
+
+## Stack (LIFO)
+
+## Queue (FIFO)
+
+### Ring buffer
+
+### Okasaki Queue
+
+## Trees
+
+### Traversals
+
+#### Preorder
+
+#### Postorder
+
+#### Inorder traversal
+
+#### Level order
+
+#### Morris order
+
+### Tree variations
+
+#### Trie
+
+#### Segment Tree
+
+#### Merge Tree
+
+#### K-D Tree
+
+#### BSP Tree
+
+#### Merkle Tree
+
+#### Treap
+
+#### Strict Binary Tree
+
+#### Full Binary Tree
+
+#### Complete Binary Tree
+
+## Binary Search Trees
+
+### BST
+
+### AVL Tree
+
+### Splay Tree
+
+### Scape Goat Tree
+
+### Red-black Tree
+
+## Heap
+
+### Heap sort
+
+## Disjoint Set
+
+## Hashes
+
+### Rolling hash
+
+### Bloom Filter
+
+## Graphs
+
+### Graph variations
+
+#### Undirected Graph
+
+#### Directed Graph
+
+#### Weighted Graph
+
+#### Connected Graph
+
+#### Disconnected Graph
+
+#### Trees
+
+#### Complete Graph
+
+#### Tournament Graph
+
+#### Bipartite Graph
+
+### Representing Graphs
+
+#### Edge List
+
+#### Adjacency Matrix
+
+#### Adjacency List
+
+### Exploring Graphs
+
+#### Depth First Search
+
+#### Breadth First Search
+
+#### Topological Sorting
+
+### Minimum Spanning Tree
+
+#### Prim
+
+#### Kruskal
+
+### Shortest Path
+
+#### Dijkstra
+
+#### Bellman-Ford
+
+#### A*
+
+## NP-problems
