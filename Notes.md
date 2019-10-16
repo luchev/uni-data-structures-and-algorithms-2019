@@ -336,6 +336,8 @@ Honorable mention - Ford–Johnson aka Merge-insertion sort. Cool idea, but not 
 
 Important algorithm: Timsort - Absolute beast.
 
+![](https://i.imgur.com/obZrU8h.png)
+
 #### Clean code
 
 ```c++
@@ -453,6 +455,10 @@ C++ STL sorting algorithm is Introsort, which is a hybrid between quicksort and 
 Quick sort optimization for arrays with many equal numbers - three-way partitioning, aka Dutch national flag.
 
 Quick sort can also be optimized with picking 2 pivots instead of 1 - multi-pivot quicksort.
+
+#### Uses apart from sorting
+
+1. Find k-th biggest/smallest element
 
 #### Clean code using Lomuto partitioning
 
@@ -652,6 +658,10 @@ void quickSort(int * array, int length) {
 1. Not a comparison sort.
 2. Very efficient for an array of integers with many repeating integers with small difference between the biggest and smallest integer.
 
+#### Uses apart from sorting
+
+1. Counting inversions
+
 #### Counting sort for positive numbers
 
 ```c++
@@ -700,6 +710,8 @@ void countingSort(int * array, int length) {
 2. Very situational sort.
 3. The bellow code is a sample implementation for floats between 0 and 1.
 
+#### Code
+
 ```c++
 #include <iostream>
 #include <vector>
@@ -737,6 +749,8 @@ void bucketSort(double *array, int length) {
 #### Key points
 
 1. Good on multi-threaded machines.
+
+#### Code
 
 ```c++
 #include <iostream>
@@ -785,23 +799,168 @@ void radixSort(int * array, int length) {
 
 ### Linear search
 
+| Linear search    | n = input size   |
+| ---------------- | ---------------- |
+| Time complexity  | $\mathcal{O}(n)$ |
+| Space complexity | $\mathcal{O}(1)$ |
+
+#### Algorithm idea
+
+Iterate every element in order and check if it is the element we are looking for.
+
+#### Uses
+
+Searching in unordered data, when we have very few queries. If we have many requests it’s better to sort the array and use faster searching for the queries.
+
 ### Binary search
 
-### Exponential search
+| Binary search    | n = input size        |
+| ---------------- | --------------------- |
+| Time complexity  | $\mathcal{O}(log(n))$ |
+| Space complexity | $\mathcal{O}(1)$      |
+
+Works only on sorted array-like structures, which support $\mathcal{O}(1)$ access to elements.
+
+The algorithm uses $\mathcal{O}(log(n))$ space if written recursively, but can be written iteratively to have $\mathcal{O}(1)$ space as well.
+
+#### Algorithm idea
+
+1. Check the middle element, if it’s the element we are looking for - we are done
+2. If the element is bigger than the one we are looking for - recurse into the left sub-array (the sub-array with smaller elements).
+3. If the element is smaller than the one we are looking for - recurse into the right sub-array (the sub-array with bigger elements).
+
+#### Uses
+
+Fast searching in ordered data.
+
+Guess and check algorithms.
 
 ### Ternary search
 
+| Ternary search   | n = input size        |
+| ---------------- | --------------------- |
+| Time complexity  | $\mathcal{O}(log(n))$ |
+| Space complexity | $\mathcal{O}(1)$      |
+
+#### Algorithm idea
+
+The same idea as binary search but we split the array in 3 parts. On each step we decide which one part to discard and recurse into the other 2.
+
+#### Uses
+
+Finding min/max in a sorted array.
+
+### Exponential search
+
+| Exponential search | n = input size        |
+| ------------------ | --------------------- |
+| Time complexity    | $\mathcal{O}(log(n))$ |
+| Space complexity   | $\mathcal{O}(1)$      |
+
+#### Algorithm idea
+
+This is the binary search algorithm applied for ordered data of unknown size. We don’t have a mid point so we start from the beginning and double our guessed index each time. e.g for guessed index: 1, 2, 4, 8, 16, 32... If we overshoot the end of the data we go back using binary search because we now have an end index. e.g for array with 27 elements we do a jump to element 32 which doesn’t exist and then use binary search on elements 16 - 32.
+
+#### Uses
+
+Binary search on streams, which are ordered and other ordered data of unknown size. 
+
 ### Jump search
+
+| Jump search      | n = input size        |
+| ---------------- | --------------------- |
+| Time complexity  | $\mathcal{O}(log(n))$ |
+| Space complexity | $\mathcal{O}(1)$      |
+
+#### Algorithm idea
+
+We decide on a jump step and check elements on each step. e.g for step 32 we will check elements 0, 32, 64, etc.
+
+Optimal jump step is $\sqrt{n}$.
+
+#### Uses
+
+Because it’s worse than Binary search, it’s useful when the data structure we are searching in has very slow jump back, aka it’s slow to go back to index $i - 10$ from $i$.
 
 ### Interpolation search
 
+| Interpolation search                        | n = input size             |
+| ------------------------------------------- | -------------------------- |
+| Time complexity for evenly distributed data | $\mathcal{O}(log(log(n)))$ |
+| Time complexity for badly distributed data  | $\mathcal{O}(n)$           |
+| Space complexity                            | $\mathcal{O}(1)$           |
+
+#### Algorithm idea
+
+If we have well distributed data we can approximate where we will find the element with the following formula
+$$
+jumpToIndex=startIndex+(\frac{endIndex-startIndex}{array[endIndex]-array[startIndex]})\times (target-array[startIndex])
+$$
+Example for well distributed data: 1, 2, 3, 4, 5, 6 .... 99, 100
+
+Example for badly distributed data: 1, 1, 1, 1.... 1, 1, 100
+
+#### Uses
+
+Very situational, when we have data which is very well distributed.
+
 ## Linked lists
+
+![](https://i.imgur.com/u8jPKdM.png)
+
+Linked list stores its data in separate Nodes. Each node points the next node in the list. The last node points NULL.
+
+The most primitive linked list’s node contains 2 fields - Data and Next pointer
+
+```c++
+struct Node {
+	int data;
+	Node* next;
+};
+```
+
+#### Use
+
+Linked lists are useful if we don’t know the input size (when getting data from streams).
+
+#### Inserting a node
+
+![](https://i.imgur.com/myKqfvr.png)
+
+#### Removing a node
+
+![](https://i.imgur.com/TwspHEo.png)
 
 ### Singly linked list
 
+Singly linked lists have only one pointer to the next Node.
+
+```C++
+struct Node {
+	int data;
+	Node* next;
+};
+```
+
+
+
 ### Doubly linked list
 
+Doubly linked lists have two pointers, one to the previous item, one to the next.
+
+```c++
+struct Node {
+	int data;
+	Node* previous;
+	Node* next;
+};
+```
+
+
+
 ### Circular linked list
+
+Circular linked lists can be implemented as singly or doubly linked list but the start and end nodes are connected. i.e the end node’s next pointer is not NULL but points the first node instead.
 
 ### XOR linked list
 
