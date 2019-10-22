@@ -638,7 +638,7 @@ void _quickSort(int * array, int start, int end) {
     if (start < end) {
         int pivot = partition(array, start, end);
         _quickSort(array, start, pivot - 1);
-        _quickSort(array, pivot + 1, end);
+        _quickSort(array, pivot, end);
     }
 }
 
