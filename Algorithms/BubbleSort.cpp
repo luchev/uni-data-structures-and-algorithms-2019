@@ -11,8 +11,8 @@ void bubbleSort(int * array, int length) {
         bool swappedAtLeastOnce = false;
 
         for (int k = 0; k < length - 1 - i; k++) {
-            if (array[k] > array[k+1]) {
-                swap(array[k], array[k+1]);
+            if (array[k] > array[k + 1]) {
+                swap(array[k], array[k + 1]);
                 swappedAtLeastOnce = true;
             }
         }

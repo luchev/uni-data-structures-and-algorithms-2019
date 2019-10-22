@@ -361,10 +361,12 @@ void merge(int * originalArray, int * mergeArray, int start, int mid, int end) {
     while (leftIndex <= mid) {
         mergeArray[sortedIndex] = originalArray[leftIndex];
         leftIndex++;
+        sortedIndex++;
     }
     while (rightIndex <= end) {
         mergeArray[sortedIndex] = originalArray[rightIndex];
         rightIndex++;
+        sortedIndex++;
     }
 
     for (int i = start; i <= end; i++) {
@@ -611,25 +613,25 @@ void quickSort(int * array, int length) {
 #### Short code using Hoare partitioning
 
 ```c++
-int partition(int * array, int start, int end) {
+int partition(int * array, int start, int end)  {
     int pivot = array[(start + end) / 2];
     int left = start;
     int right = end;
-    
-    while (true) {
+
+    while (left <= right) {
         while (array[left] < pivot) {
             left++;
         }
         while (array[right] > pivot) {
             right--;
         }
-        
-        if (left >= right) {
-            return right;
-        }
 
         swap(array[left], array[right]);
+        left++;
+        right--;
     }
+
+    return left;
 }
 
 void _quickSort(int * array, int start, int end) {
