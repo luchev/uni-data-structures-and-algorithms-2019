@@ -458,6 +458,17 @@ Quick sort optimization for arrays with many equal numbers - three-way partition
 
 Quick sort can also be optimized with picking 2 pivots instead of 1 - multi-pivot quicksort.
 
+#### Why is quick sort usually faster than merge sort and other fast algorithms?
+
+The table bellow is an approximation of the time required to access data from the disk/ram/CPU cache. It gives us an idea why quick sort is indeed quick. Quick sort being in-place gets reduced to problems in the CPU cache very fast. Merge sort on the other hand uses additional memory, so it has 2 arrays it works with essentially. Often these 2 arrays cannot simultaneously enter the cache so they have to be read from RAM, which is very slow. Quick sort, however, uses only one array which gets pulled into the CPU cache and operations on it are very fast.
+
+| Memory hierarchy | CPU cycles | size   |
+| ---------------- | ---------- | ------ |
+| HDD              | 500, 000   | 1 TB   |
+| RAM              | 100        | 4 GB   |
+| L2 cache         | 10         | 512 kb |
+| L1 cache         | 1          | 32 kb  |
+
 #### Uses apart from sorting
 
 1. Find k-th biggest/smallest element
@@ -812,7 +823,7 @@ Iterate every element in order and check if it is the element we are looking for
 
 #### Uses
 
-Searching in unordered data, when we have very few queries. If we have many requests it’s better to sort the array and use faster searching for the queries.
+Searching in unordered data, when we have very few queries. If we have many queries it’s better to sort the array and use faster searching for the queries.
 
 ### Binary search
 
@@ -904,7 +915,7 @@ Example for badly distributed data: 1, 1, 1, 1.... 1, 1, 100
 
 #### Uses
 
-Very situational, when we have data which is very well distributed.
+Very situational, when we have data which is evenly distributed.
 
 ## Linked lists
 
@@ -920,6 +931,33 @@ struct Node {
 	Node* next;
 };
 ```
+
+#### Complexity comparison
+
+| Operation / Data structure | Array            | Singly linked list without tail | Singly linked list with tail | Doubly linked list without tail | Doubly linked list with tail |
+| -------------------------- | ---------------- | ------------------------------- | ---------------------------- | ------------------------------- | ---------------------------- |
+| push_front                 | $\mathcal{O}(n)$ | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             |
+| pop_front                  | $\mathcal{O}(n)$ | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             |
+| get_front                  | $\mathcal{O}(1)$ | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             |
+| push_back                  | $\mathcal{O}(1)$ | $\mathcal{O}(n)$                | $\mathcal{O}(1)$             | $\mathcal{O}(n)$                | $\mathcal{O}(1)$             |
+| pop_back                   | $\mathcal{O}(1)$ | $\mathcal{O}(n)$                | $\mathcal{O}(n)$             | $\mathcal{O}(n)$                | $\mathcal{O}(1)$             |
+| get_back                   | $\mathcal{O}(1)$ | $\mathcal{O}(n)$                | $\mathcal{O}(1)$             | $\mathcal{O}(n)$                | $\mathcal{O}(1)$             |
+| get_at                     | $\mathcal{O}(1)$ | $\mathcal{O}(n)$                | $\mathcal{O}(n)$             | $\mathcal{O}(n)$                | $\mathcal{O}(n)$             |
+| find_key                   | $\mathcal{O}(n)$ | $\mathcal{O}(n)$                | $\mathcal{O}(n)$             | $\mathcal{O}(n)$                | $\mathcal{O}(n)$             |
+| erase_key                  | $\mathcal{O}(n)$ | $\mathcal{O}(n)$                | $\mathcal{O}(n)$             | $\mathcal{O}(n)$                | $\mathcal{O}(n)$             |
+| is_empty                   | $\mathcal{O}(1)$ | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             |
+| add_before                 | $\mathcal{O}(n)$ | $\mathcal{O}(n)$                | $\mathcal{O}(n)$             | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             |
+| add_after                  | $\mathcal{O}(n)$ | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             | $\mathcal{O}(1)$                | $\mathcal{O}(1)$             |
+
+#### Memory allocation
+
+##### Array
+
+![](https://i.imgur.com/YrXJ0RG.png)
+
+##### Linked list
+
+![](https://i.imgur.com/s6NIOOy.png)
 
 #### Use
 
@@ -944,8 +982,6 @@ struct Node {
 };
 ```
 
-
-
 ### Doubly linked list
 
 Doubly linked lists have two pointers, one to the previous item, one to the next.
@@ -958,19 +994,53 @@ struct Node {
 };
 ```
 
-
-
 ### Circular linked list
 
 Circular linked lists can be implemented as singly or doubly linked list but the start and end nodes are connected. i.e the end node’s next pointer is not NULL but points the first node instead.
 
 ### XOR linked list
 
+Doubly linked list using memory for singly linked list. The idea is to XOR the address of the previous element and the next element and save that XOR value in one pointer. When we need to access the next element, we XOR the pointer we have saved with the address of the previous element and the result will be the pointer to the next element.
+
 ### Unrolled linked list
+
+Linked list of arrays. Usually the size of the array is the size of the CPU cache. This way we can quickly iterate through the arrays in the cache and we also have the benefits of a linked list.
 
 ### Skip list
 
+A skip list is a linked list-like data structure which allows $\mathcal{O}(logn)$ search and $\mathcal{O}(logn)$ insertion in an ordered sequence of elements. It builds $\mathcal{O}(logn)$ lanes up with links more and more sparse. The chance to build the next lane of links up is 1/2. The higher lanes are “express lanes” for the lanes bellow. The idea is to quickly get to the approximate location we need to get to on the higher lanes and then go down on the lower lanes to the exact location we need.
+
+![](https://i.imgur.com/XW8f8Y0.png)
+
 ## Dynamic arrays
+
+A dynamic array is an array which grows in size when it’s full. Each time it increases its size 2 times. e.g the size at the start is 1, then 2, 4, 8, 16....
+
+The good points are we have amortized $\mathcal{O}(1)$ Add and $\mathcal{O}(1)$ access like in regular arrays.
+
+The downsides are If we have added 32 items and have reserverd 64 items, but don’t add any more items  we are wasting memory needlessly. Also, when adding, if the array is full we will need to resize so occasionally our Add will be with $\mathcal{O}(n)$ complexity.
+
+### Amortized complexity
+
+Amortized complexity is the total expense per operation, evaluated over a sequence of operations.
+
+In other words if we add 1 item it could be very expensive $\mathcal{O}(n)$ but if we add `n` items it is going be $\mathcal{O}(n)$ to add all n-items.
+
+Explained with example:
+
+Let’s take a dynamic array (in C++ that would be std::vector).
+
+At the start we have 1 empty slot. In constant time we add 1 item at the end.
+
+When we want to add 1 more item, our array is full, so we expand it 2x in size to 2 items, we copy the old 1 item at the start and in constant time we add the new item at the end. The copy operation takes $\mathcal{O}(n)$ steps.
+
+We want to add a 3rd item, but we have capacity of 2, we expand the array to 4 in $\mathcal{O}(n)$ steps and add the new item to the end in constant time.
+
+We want to add a 4th item, and we have capacity of 4 so we can add it to the end in constant time.
+
+In conclusion, every time we want to add an item in position $2^k$ we ahve to expand with complexity $\mathcal{O}(2^k)$. All other additions are with $\mathcal{O}(1)$ comlexity.
+
+So in the end we have $1 + 2^0 + 1 + 2^1 + 1 + 1 + 2^2 + 1 + 1 +... + 2^k$ where $k = log(n)$. If we sum these numbers we will get n from the 1s and 2n from the powers of 2. In conclusion adding n items costs us $\mathcal{O}(n)$ time. In other words amortized $\mathcal{O}(1)$ per item.
 
 ## Stack (LIFO)
 
