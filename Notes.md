@@ -1044,9 +1044,68 @@ So in the end we have $1 + 2^0 + 1 + 2^1 + 1 + 1 + 2^2 + 1 + 1 +... + 2^k$ where
 
 ## Stack (LIFO)
 
+A stack is a **restricted** data structure - allows access only to the element at the top of the stack.
+
+Add elements to the top, take from the top.
+
+LIFO = Last In First Out
+
+### Problems that can occur with stacks
+
+Overflow - Adding too many elements and the stack cannot contain them
+
+Underflow - Try to access the top element when the stack is empty
+
+| Stack with   | Dynamic Array                      | Linked list      |
+| ------------ | ---------------------------------- | ---------------- |
+| push()       | Amortized $\mathcal{O}(1)$         | $\mathcal{O}(1)$ |
+| pop()        | Amortized $\mathcal{O}(1)$         | $\mathcal{O}(1)$ |
+| peek()/top() | $\mathcal{O}(1)$                   | $\mathcal{O}(1)$ |
+| clear()      | $\mathcal{O}(p)$ - delete memory   | $\mathcal{O}(n)$ |
+| isEmpty()    | $\mathcal{O}(1)$                   | $\mathcal{O}(1)$ |
+| initialize   | $\mathcal{O}(p)$ - allocate memory | $\mathcal{O}(1)$ |
+| merge        | $\mathcal{O}(n)$                   | $\mathcal{O}(1)$ |
+
+### Application of stacks
+
+1. Undo/Redo in programs
+2. Reverse word/array
+3. Programming languages are usually compiled down and work as a pushdown automaton
+4. Syntax parsing - used by compilers
+5. Switching between infix and prefix notation
+6. Backtracking
+
 ## Queue (FIFO)
 
+Add elements to the back, take from the front.
+
+FIFO = First In First Out
+
+| Stack with       | Dynamic Array                      | Linked list      |
+| ---------------- | ---------------------------------- | ---------------- |
+| push()/enqueue() | Amortized $\mathcal{O}(1)$         | $\mathcal{O}(1)$ |
+| pop()/dequeue()  | Amortized $\mathcal{O}(1)$         | $\mathcal{O}(1)$ |
+| peek()/top()     | $\mathcal{O}(1)$                   | $\mathcal{O}(1)$ |
+| clear()          | $\mathcal{O}(p)$ - delete memory   | $\mathcal{O}(n)$ |
+| isEmpty()        | $\mathcal{O}(1)$                   | $\mathcal{O}(1)$ |
+| initialize       | $\mathcal{O}(p)$ - allocate memory | $\mathcal{O}(1)$ |
+
+### Application of queues
+
+1. System processes
+2. Interactive processes
+3. Background processes
+4. Batch process
+5. CPU scheduling
+6. Synchronize data transfer
+7. Print spooler
+8. First-come-first-serve (servers for example)
+
+![](https://www.tutorialspoint.com/operating_system/images/queuing_diagram.jpg)
+
 ### Ring buffer
+
+
 
 ### Okasaki Queue
 
