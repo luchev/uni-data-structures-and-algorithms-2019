@@ -1105,9 +1105,22 @@ FIFO = First In First Out
 
 ### Ring buffer
 
+Ring buffers are queues where the new data can overwrite the old data when needed. It’s like a queue implemented with an array, providing limited space. Problem that can occur if the pointer for adding new data reaches the pointer for fetching data, in other words the front pointer and the back pointer must never overlap.
 
+![](https://i.imgur.com/kVoguMh.png)
+
+#### Application of ring buffers
+
+1. Chats
+2. Real-time processing
 
 ### Okasaki Queue
+
+A queue implemented with 2 linked lists.
+
+https://ucsd-progsys.github.io/liquidhaskell-tutorial/09-case-study-lazy-queues.html
+
+Other interesting topic to research https://en.wikipedia.org/wiki/Persistent_data_structure
 
 ## Trees
 
