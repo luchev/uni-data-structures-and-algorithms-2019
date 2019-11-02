@@ -22,10 +22,8 @@ void merge(int * originalArray, int * mergeArray, int start, int mid, int end) {
 void _mergeSort(int * originalArray, int * mergeArray, int start, int end) {
     if (start < end) {
         int mid = (start + end) / 2;
-
         _mergeSort(originalArray, mergeArray, start, mid);
         _mergeSort(originalArray, mergeArray, mid + 1, end);
-
         merge(originalArray, mergeArray, start, mid, end);
     }
 }

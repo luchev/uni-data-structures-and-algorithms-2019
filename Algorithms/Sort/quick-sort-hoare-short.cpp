@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 
 void swap(int & a, int & b) {
     int tmp = a;
@@ -6,19 +7,26 @@ void swap(int & a, int & b) {
     b = tmp;
 }
 
-int partition(int * array, int start, int end) {
-    int pivot = array[end];
-    int pivotIndex = start;
-    
-    for (int i = start; i <= end; i++) {
-        if (array[i] < pivot) {
-            swap(array[i], array[pivotIndex]);
-            pivotIndex++;
-        }
-    }
+int partition(int * array, int start, int end)  {
+    int pivot = array[(start + end) / 2];
+    int left = start - 1;
+    int right = end + 1;
 
-    swap(array[end], array[pivotIndex]);
-    return pivotIndex;
+    while (true) {
+        do {
+            left++;
+        } while (array[left] < pivot);
+
+        do {
+            right--;
+        } while (array[right] > pivot);
+
+        if (left >= right) {
+            return right;
+        }
+
+        swap(array[left], array[right]);
+    }
 }
 
 void _quickSort(int * array, int start, int end) {
