@@ -332,9 +332,9 @@ void insertionSort(int * array, int length) {
 3. Splitting the array in 2 every time gives us $log(n)$ levels.
 4. On each level we have $\mathcal{O}(n)$ for the merging operation.
 
-Honorable mention - Ford–Johnson aka Merge-insertion sort. Cool idea, but not practical enough.
+Honorable mention - Ford–Johnson aka. Merge-insertion sort. Cool idea, but not practical enough.
 
-Important algorithm: Timsort - Absolute beast. https://github.com/tvanslyke/timsort-cpp
+Important algorithm: Timsort - Absolute beast with $\mathcal{O}(nlogn)$ worst case and $\mathcal{O}(n)$ best case. Implementation can be found here: https://github.com/tvanslyke/timsort-cpp
 
 ![](https://i.imgur.com/obZrU8h.png)
 
