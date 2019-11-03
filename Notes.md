@@ -626,30 +626,31 @@ void quickSort(int * array, int length) {
 ```c++
 int partition(int * array, int start, int end)  {
     int pivot = array[(start + end) / 2];
-    int left = start;
-    int right = end;
+    int left = start - 1;
+    int right = end + 1;
 
-    while (left <= right) {
-        while (array[left] < pivot) {
+    while (true) {
+        do {
             left++;
-        }
-        while (array[right] > pivot) {
+        } while (array[left] < pivot);
+
+        do {
             right--;
+        } while (array[right] > pivot);
+
+        if (left >= right) {
+            return right;
         }
 
         swap(array[left], array[right]);
-        left++;
-        right--;
     }
-
-    return left;
 }
 
 void _quickSort(int * array, int start, int end) {
     if (start < end) {
         int pivot = partition(array, start, end);
         _quickSort(array, start, pivot - 1);
-        _quickSort(array, pivot, end);
+        _quickSort(array, pivot + 1, end);
     }
 }
 
