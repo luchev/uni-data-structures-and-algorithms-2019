@@ -17,7 +17,7 @@ public:
 
     int peek() const {
         if (data.size() > 0) {
-            return data[data.size() - 1];
+            return data.back();
         } else {
             throw std::underflow_error("Stack is empty");
         }
