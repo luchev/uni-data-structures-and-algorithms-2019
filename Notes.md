@@ -1266,19 +1266,133 @@ Other interesting topic to research https://en.wikipedia.org/wiki/Persistent_dat
 
 ## Trees
 
+A tree is a hierarchical data structure. A tree has one root node (one starting element) and all other elements are children/grandchildren/etc. of this root element.
+
+![](https://i.imgur.com/5ownlqQ.jpg)
+
+The root in the picture above is 2. Its children are 7 and 5. 5 is a child of the root 2 and also the parent of 9.
+
+### How does the tree stay connected
+
+There are 2 ways to keep the Nodes in the tree connected.
+
+1. Each parent has pointers to its children. (The classic widely used approach)
+2. Each node has a pointer to its parent. (Not widely used in most algorithms, but still very useful in some particular problems)
+3. 1 and 2 combined - Each node has pointers to its children and a pointer to its parent. This makes the traversal of the tree very easy in each direction, but also takes more memory.
+
+### Node of a binary tree
+
+```c++
+struct Node {
+    int data;
+    Node* left = nullptr;
+    Node* right = nullptr;
+};
+```
+
+### Node of a tree with variable number of children
+
+```c++
+struct Node {
+    int data;
+    vector<Node*> children;
+};
+```
+
 ### Traversals
 
-#### Preorder
+#### Preorder (DFS)
+
+Preorder traversal is also known as DFS (Depth First Search).
+
+Time complexity $\mathcal{O}(n)$, where `n` is the number of nodes in the tree.
+
+The order in which we visit nodes is
+
+1. Current node
+2. Children of the node in order from left to right
+
+```c++
+void DFS(Node* current) {
+    if (current == nullptr) {
+        return;
+    }
+    
+    cout << current->data; // do something with the node
+    
+    DFS(current->left);
+    DFS(current->right);
+}
+```
 
 #### Postorder
 
+Time complexity $\mathcal{O}(n)$, where `n` is the number of nodes in the tree.
+
+The order in which we visit nodes is
+
+1. Children of the node in order from left to right
+2. Current node
+
+```c++
+void Postorder(Node* current) {
+    if (current == nullptr) {
+        return;
+    }
+
+    Postorder(current->left);
+    Postorder(current->right);
+    
+    cout << current->data; // do something with the node
+}
+```
+
 #### Inorder traversal
+
+Time complexity $\mathcal{O}(n)$, where `n` is the number of nodes in the tree.
+
+The order in which we visit nodes is
+
+1. Left child
+2. Current node
+3. Right child
+
+```c++
+void Postorder(Node* current) {
+    if (current == nullptr) {
+        return;
+    }
+
+    Postorder(current->left);
+    cout << current->data; // do something with the node
+    Postorder(current->right);
+}
+```
 
 #### Level order
 
+Level order is also known as WFS (Width First Search) or BFS (Breadth First Search).
+
+Time complexity $\mathcal{O}(n)$, where `n` is the number of nodes in the tree.
+
+The order in which we visit nodes is
+
+1. All the nodes of level 1 (the root)
+2. All the nodes of level 2 from left to right (the children of the root)
+3. All the nodes of level 3 from left to right
+4. etc.
+
 #### Morris order
 
+Morris order is an inorder traversal algorithm which does not use extra space for recursion or a stack. However it changes the tree during traversal and then reverts it to its original state.
+
+https://en.wikipedia.org/wiki/Tree_traversal#Morris_in-order_traversal_using_threading
+
 ### Tree variations
+
+#### Generalized tree
+
+A tree where each node stores whatever data we need and has an arbitrary number of children.
 
 #### Trie
 
@@ -1293,6 +1407,8 @@ Other interesting topic to research https://en.wikipedia.org/wiki/Persistent_dat
 #### Merkle Tree
 
 #### Treap
+
+#### Threaded Binary Tree
 
 #### Strict Binary Tree
 
