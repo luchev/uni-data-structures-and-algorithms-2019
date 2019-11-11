@@ -53,10 +53,10 @@ private:
         if (current) {
             if (current->data == value) {
                 return true;
-            } else if (current->data < value) {
-                return _exists(value, current->left);
-            } else { // data > value
+            } else if (value > current->data) {
                 return _exists(value, current->right);
+            } else { // value < data
+                return _exists(value, current->left);
             }
         } else {
             return false;
