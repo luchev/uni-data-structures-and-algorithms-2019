@@ -1105,6 +1105,8 @@ struct Node {
 
 Linked lists are useful if we don’t know the input size (when getting data from streams).
 
+Also if we want constant time for adding/removing element from the front/back and not amortized constant.
+
 #### Inserting a node
 
 ![](https://i.imgur.com/myKqfvr.png)
@@ -1394,6 +1396,13 @@ https://en.wikipedia.org/wiki/Tree_traversal#Morris_in-order_traversal_using_thr
 
 A tree where each node stores whatever data we need and has an arbitrary number of children.
 
+```c++
+struct Node {
+	int data;
+    std::vector<Node*> children;
+}
+```
+
 #### Trie
 
 #### Segment Tree
@@ -1420,13 +1429,207 @@ A tree where each node stores whatever data we need and has an arbitrary number 
 
 ### BST
 
+A binary search tree is a tree with the following properties
+
+1. Each node has at most 2 children (left and right)
+2. The value of the left child of a node is smaller than the value of the parent
+3. The value of the right child of a node is bigger than the value of the parent
+
+```c++
+struct BST {
+    int data;
+    BST* left;
+    BST* right;
+}
+```
+
+#### Complexity
+
+| BST operation | Average case        | Worst case       |
+| ------------- | ------------------- | ---------------- |
+| insert(key)   | $\mathcal{O}(logn)$ | $\mathcal{O}(n)$ |
+| remove(key)   | $\mathcal{O}(logn)$ | $\mathcal{O}(n)$ |
+| find(key)     | $\mathcal{O}(logn)$ | $\mathcal{O}(n)$ |
+| findMin()     | $\mathcal{O}(logn)$ | $\mathcal{O}(n)$ |
+| findMax()     | $\mathcal{O}(logn)$ | $\mathcal{O}(n)$ |
+
+The order in which we receive the data is important! If we receive ordered array [1, 2, 3, 4, ...] we will constantly add in the right subtree. Therefore we will hit the worst case $\mathcal{O}(n)$ per operation.
+
 ### AVL Tree
+
+AVL Tree is a BST tree which also has information on each node what is the height of the node. This allows it to balance itself and always keep the height as small as possible.
+
+```c++
+struct BST {
+    int data;
+    int height;
+    BST* left;
+    BST* right;
+}
+```
+
+#### Complexity
+
+| BST operation | Average case        | Worst case          |
+| ------------- | ------------------- | ------------------- |
+| insert(key)   | $\mathcal{O}(logn)$ | $\mathcal{O}(logn)$ |
+| remove(key)   | $\mathcal{O}(logn)$ | $\mathcal{O}(logn)$ |
+| find(key)     | $\mathcal{O}(logn)$ | $\mathcal{O}(logn)$ |
+| findMin()     | $\mathcal{O}(logn)$ | $\mathcal{O}(logn)$ |
+| findMax()     | $\mathcal{O}(logn)$ | $\mathcal{O}(logn)$ |
+
+The order in which we receive the data doesn’t matter because the tree balances itself to always have the smallest possible height.
+
+#### Balancing
+
+Balancing is done using the height kept in the nodes. To use the height a Balance Factor (BF) is calculated on each node. $BF = height(leftSubTree) - height(rightSubTree)$. Depending on the value of the balance factor there are the following 2 situations:
+
+1. $|BF| \leq 1$ - If the balance factor is between -1 and 1 then the node is balanced.
+2. $|BF| > 1$ - if the balance factor less than -1 or more than 1 (e.g -2 or 2), the node is not balanced and we must balance it.
+
+If a node is unbalanced we can have 4 rotations that we can do:
+
+1. RR (Right Right) - For the current node the **right** subtree is heavier. For the **right child** of the current node the **right** subtree is heavier.
+2. RL (Right Left) - For the current node the **right** subtree is heavier. For the **right child** of the current node the **left** subtree is heavier.
+3. LL (Left Left) - For the current node the **left** subtree is heavier. For the **left child** of the current node the **left** subtree is heavier.
+4. LR (Left Right) - For the current node the **left** subtree is heavier. For the **left child** of the current node the **right** subtree is heavier.
+
+#### Code
+
+##### Height and balance calculation
+
+```c++
+void calculateHeight() {
+    height = 0;
+    if (left) {
+        height = max(height, left->height + 1);
+    }
+    if (right) {
+        height = max(height, right->height + 1);
+    }
+}
+
+int leftHeight() const {
+    if (left) {
+        return left->height + 1;
+    }
+    return 0;
+}
+
+int rightHeight() const {
+    if (right) {
+        return right->height + 1;
+    }
+    return 0;
+}
+
+void recalculateHeights() {
+    if (left) {
+        left->calculateHeight();
+    }
+    if (right) {
+        right->calculateHeight();
+    }
+    this->calculateHeight();
+}
+
+int balance() const {
+    return leftHeight() - rightHeight();
+}
+```
+
+##### Rotations
+
+```c++
+void rotateRight() {
+    if (!left) {
+        return;
+    }
+
+    Node* leftRight = this->left->right;
+    Node* oldRight = this->right;
+
+    swap(this->data, this->left->data);
+    this->right = this->left;
+    this->left = this->left->left;
+    this->right->left = leftRight;
+    this->right->right = oldRight;
+}
+
+void rotateLeft() {
+    if (!right) {
+        return;
+    }
+
+    Node* rightLeft = this->right->left;
+    Node* oldLeft = this->left;
+
+    swap(this->data, this->right->data);
+    this->left = this->right;
+    this->right = this->right->right;
+    this->left->left = oldLeft;
+    this->left->right = rightLeft;
+}
+```
+
+##### Check at each node when going up/down the recursion when inserting/deleting/etc.
+
+```c++
+void fixTree() {
+    if (balance() < -1) { // Right is heavier
+        if (right->balance() <= -1) { // RR
+            this->rotateLeft();
+            recalculateHeights();
+        }
+        else if (right->balance() >= 1) { // RL
+            right->rotateRight();
+            this->rotateLeft();
+            recalculateHeights();
+        }
+    }
+    else if (balance() > 1) { // Left is heavier
+        if (left->balance() >= 1) { // LL
+            this->rotateRight();
+            recalculateHeights();
+        }
+        else if (left->balance() <= -1) { // LR
+            left->rotateLeft();
+            this->rotateRight();
+            recalculateHeights();
+        }
+    }
+}}
+```
+
+##### Modify insert
+
+```c++
+Node* _insert(int value, Node* current) {
+	// insert from BST
+    current->calculateHeight();
+    current->fixTree();
+    return current;
+}
+```
+
+##### Modify remove
+
+```c++
+Node* _remove(int value, Node* current) {
+	// remove from BST
+    current->calculateHeight();
+    current->fixTree();
+    return current;
+}
+```
 
 ### Splay Tree
 
 ### Scape Goat Tree
 
 ### Red-black Tree
+
+### 2-3 Tree
 
 ## Heap
 
