@@ -39,8 +39,15 @@ private:
     void siftDown(int pos) {
         bool hasRight = getRight(pos) < data.size();
         bool hasLeft = getLeft(pos) < data.size();
+
         if (hasRight && (data[pos] < data[getLeft(pos)] || data[pos] < data[getRight(pos)])) {
-            int swapWith = data[getLeft(pos)] < data[getRight(pos)] ? getRight(pos) : getLeft(pos);
+            int swapWith = -1;
+            if (data[getLeft(pos)] < data[getRight(pos)]) {
+                swapWith = getRight(pos);
+            } else {
+                swapWith = getLeft(pos);   
+            }
+            
             swap(data[pos], data[swapWith]);
             siftDown(swapWith);
         }
