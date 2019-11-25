@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <list>
 using namespace std;
 
 struct Pair {
@@ -8,7 +9,7 @@ struct Pair {
 };
 
 struct Node {
-	vector<Pair> neighbours;
+	list<Pair> neighbours;
 
 	bool hasNeighbour(int index) {
 		for (auto neighbour : neighbours) {

@@ -1,9 +1,10 @@
 #include <iostream>
 #include <vector>
+#include <list>
 using namespace std;
 
 struct Node {
-	vector<int> neighbours;
+	list<int> neighbours;
 
 	bool hasNeighbour(int index) {
 		for (auto i : neighbours) {
