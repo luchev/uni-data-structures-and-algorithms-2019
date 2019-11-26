@@ -28,20 +28,18 @@ private:
 	void _BFS(int start, vector<bool> & visited) {
 		queue<int> nextToProcess;
 		nextToProcess.push(start);
+		visited[start] = true;
 
 		while(!nextToProcess.empty()) {
 			int current = nextToProcess.front();
 			nextToProcess.pop();
-			if (visited[current]) {
-				continue;
-			}
 
 			cout << current << ", ";
-			visited[current] = true;
 
 			for (auto neighbour : nodes[current].neighbours) {
 				if (!visited[neighbour]) {
 					nextToProcess.push(neighbour);
+					visited[neighbour] = true;
 				}
 			}
 		}
