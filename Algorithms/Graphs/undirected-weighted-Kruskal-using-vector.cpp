@@ -79,6 +79,10 @@ public:
 	}
 
 	list<Edge> kruskal() const {
+		if (nodes.size() < 1) {
+			return list<Edge>();
+		}
+		
 		vector<Edge> allEdges = getAllEdges();
 		sort(allEdges.begin(), allEdges.end());
 

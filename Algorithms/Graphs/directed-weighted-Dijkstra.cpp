@@ -63,6 +63,10 @@ public:
 	}
 
 	list<Edge> dijkstra(int start) const {
+		if (nodes.size() < 1) {
+			return list<Edge>();
+		}
+		
 		// parent[i] will hold the index of the parent node
 		vector<int> parent(nodes.size(), -1);
 		// distance[i] will hold the total distance to the i-th node
