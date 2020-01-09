@@ -90,7 +90,7 @@ public:
 		vector<int> components;
 		components.resize(nodes.size());
 
-		for (int i = 0; i < nodes.size() + 1; i++) {
+		for (int i = 0; i < nodes.size(); i++) {
 			components[i] = i;
 		}
 
