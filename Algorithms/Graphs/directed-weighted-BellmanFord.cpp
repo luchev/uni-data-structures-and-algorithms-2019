@@ -86,7 +86,7 @@ public:
 		distance[start] = 0;
 		for (int i = 0; i < nodes.size() - 1; i++) {
 			for (auto edge : allEdges) {
-				int alternativeDistance = distance[edge.from] + edge.distance;
+				long long alternativeDistance = distance[edge.from] + edge.distance;
 				if (alternativeDistance < distance[edge.to]) {
 					distance[edge.to] = alternativeDistance;
 					parent[edge.to] = edge.from;
